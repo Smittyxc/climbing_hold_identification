@@ -1,1 +1,0 @@
--	Have one member of your group let me know who is in your group and submit a 1/2-1 page proposal for your project topic. Decide whether you are doing a lecture (in which case you should document the source material you plan to use and some bullet points for the lecture) or analyzing/developing a machine learning method (describe your planned strategy and data).
