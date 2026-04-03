@@ -24,7 +24,7 @@ yolo_csv_file = f"{temp_path}/yolo_metrics.csv"
 
 # --- Run the models! ---
 print("\n--- Starting SAHI Inference ---")
-sahi_detection_model(temp_path + '/sahi', test_files, sahi_csv_file)
+# sahi_detection_model(temp_path + '/sahi', test_files, sahi_csv_file)
 
 print("\n--- Starting YOLO Inference ---")
 yolo_inference(test_files, temp_path + '/yolo', yolo_csv_file)

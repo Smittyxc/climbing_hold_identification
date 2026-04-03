@@ -18,11 +18,11 @@ def yolo_inference(test_paths, save_path, csv_save_path):
             result = results[0] # Extract the single Result object
 
             # Filter out large boxes
-            # valid_indices = filter_yolo_large_box(result.orig_shape, result.boxes)
-            # filtered_result = result[valid_indices]
+            valid_indices = filter_yolo_large_box(result.orig_shape, result.boxes)
+            filtered_result = result[valid_indices]
             
             # Save the image
-            result.save(filename=f"{save_path}/yolo_result_{i}.jpg", labels=False)
+            filtered_result.save(filename=f"{save_path}/yolo_result_{i}.jpg", labels=False)
 
             # 3. Calculate runtime
             end_time_iteration = time.time()
