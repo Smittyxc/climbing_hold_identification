@@ -4,6 +4,9 @@ import time
 from PIL import Image
 from sahi import AutoDetectionModel
 from sahi.predict import get_sliced_prediction
+from datetime import datetime
+import json
+from pprint import pprint
 
 def sahi_detection_model(save_path, test_paths, csv_save_path, conf=0.50):
     MIN_PIXEL_AREA = 400  
@@ -60,3 +63,39 @@ def filter_large_box(width, height, preds):
         if box_area < img_size / 25:
             filtered_preds.append(pred)
     return filtered_preds
+
+def sahi_single_inf(img_path, save_path):
+    detection_model = AutoDetectionModel.from_pretrained(
+        model_type="ultralytics",
+        model_path=r'best4.pt', 
+        confidence_threshold=0.5,
+        device="cpu" 
+    )
+    
+    width, height = get_image_size(img_path)
+
+    result = get_sliced_prediction(
+                img_path,
+                detection_model,
+                slice_height=height // 2,
+                slice_width=width // 2,
+                overlap_height_ratio=0.2,
+                overlap_width_ratio=0.2,
+            )
+    
+    result.object_prediction_list = filter_large_box(width, height, result.object_prediction_list)
+    pprint(result.object_prediction_list)
+    app_data = []
+    for box_data in result.object_prediction_list:
+        
+        bbox = {
+            'coords': box_data.bbox.to_xywh()
+        }
+
+    app_data = {
+        'date': datetime.isoformat(datetime.now()),
+        'boxes': result.object_prediction_list,
+    }
+   
+    with open("app_data.json", "w") as f:
+        json.dump(app_data, f)
